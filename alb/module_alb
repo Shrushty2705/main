@@ -1,0 +1,9 @@
+module "alb" {
+  source          = "./modules/alb"
+  name            = "myapp-sk"
+  vpc_id          = "vpc-0b07a3c9b6f48f9ed"
+  public_subnets  = [
+    "subnet-0dbffbdf2e0355e54", 
+    "subnet-03c813f8f90702604"
+    ]
+}
