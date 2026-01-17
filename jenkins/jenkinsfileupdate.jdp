@@ -1,0 +1,51 @@
+
+pipeline {
+    agent any
+
+    stages {
+
+        stage('stage-1-pull') {
+            steps {
+                git branch: 'devops', url: 'https://github.com/abhilashmwaghmare/EASY_CRUD.git'
+            }
+        }
+
+        stage('stage-2-build') {
+            steps {
+                sh '''
+                  cd backend
+                  mvn clean package -DskipTests
+                '''
+            }
+        }
+
+        stage('stage-3-sonar') {
+            steps {
+                sh '''
+                  cd backend
+                  mvn clean verify sonar:sonar \
+                    -DskipTests \
+                    -Dsonar.projectKey=project \
+                    -Dsonar.projectName=project \
+                    -Dsonar.host.url=http://13.51.158.249:9000 \
+                    -Dsonar.token=sqp_9fd477c60d21b2463f3706530f699317ea769186
+                '''
+            }
+        }
+        
+        stage('stage-4-sonar') {
+            steps {
+                withSonarQubeEnv(installationName: 'sonarqube',credentialsId: 'ad') {
+    // some block
+}
+                        
+            }
+        }
+
+        stage('stage-5-deploy') {
+            steps {
+                echo 'deploy done'
+            }
+        }
+    }
+}
